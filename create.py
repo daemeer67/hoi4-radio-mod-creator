@@ -119,7 +119,19 @@ def create(root, music_list, original_radio_station_name, output_directory, thum
         shutil.copy(thumbnail_path, os.path.join(new_station_path, "thumbnail.jpg"))
         
     if radio_station_cover_path and os.path.isfile(radio_station_cover_path):
-        shutil.copy(radio_station_cover_path, os.path.join(new_station_path, "interface", f"{radio_station_name}_faceplate.dds"))
+        radio_cover_filename = os.path.basename(radio_station_cover_path)
+        shutil.copy(radio_station_cover_path, os.path.join(new_station_path, "gfx", f"{radio_cover_filename}"))
+        with open(os.path.join(new_station_path, "interface", "cwm_music.gfx"), "w") as cwm_music_file:
+            cwm_music_file.write(
+                f"""spriteTypes = {{
+    spriteType = {{
+		name = "GFX_{radio_cover_filename.split('.')[0]}"
+		textureFile = "gfx/{radio_cover_filename}"
+		noOfFrames = 2
+	}}
+}}"""
+            )
+            cwm_music_file.close()
     
     
     root.config(cursor = "")
