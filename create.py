@@ -108,7 +108,7 @@ def create(root, music_list, original_radio_station_name, output_directory, thum
     }}
     name="{original_radio_station_name}"
     supported_version="1.17.4.1"
-    path="C:/Users/user/Documents/Paradox Interactive/Hearts of Iron IV/mod/{radio_station_name}" """
+    path="{output_directory}/{radio_station_name}" """
 
     with open(mod_file_path, "w", encoding="utf-8") as mod_file:
         mod_file.write(mod_file_content)
