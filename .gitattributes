@@ -1,0 +1,16 @@
+# Default: use LF for everything
+* text=auto eol=lf
+
+# Localisation files (very sensitive)
+*.yml text eol=lf
+
+# Script and config files
+*.txt text eol=lf
+*.gui text eol=lf
+*.gfx text eol=lf
+*.asset text eol=lf
+*.mod text eol=lfadd 
+
+# Binary files (do not modify line endings)
+*.dds binary 
+*.png binary
