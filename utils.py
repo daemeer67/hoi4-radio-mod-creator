@@ -1,8 +1,19 @@
 import os
 from tkinter import *
 from tkinter import filedialog
+import json
 
 file_path = "save.txt"
+
+def btn_cursor(widget):
+    widget.bind("<Enter>", lambda e: widget.config(cursor="hand2"))
+    widget.bind("<Leave>", lambda e: widget.config(cursor=""))
+
+def load_theme():
+    theme = {}
+    with open("theme.json", "r") as file:
+        theme = json.load(file)
+    return theme
 
 def change_directory(entry, default_directory=os.getcwd()):
     if not (default_directory and os.path.exists(default_directory)):
@@ -49,11 +60,12 @@ def show_music(frame, music_list):
     clear_music_interface(frame)
     
     for music in music_list:
-       default_color = "#f0f0f0"
-       hovered_color = "#cacaca"
+       colors = load_theme()
+       default_color = colors.get("default_music_color")
+       hovered_color = colors.get("hovered_music_color")
        
-       button_color = "#cf4646"
-       hovered_button_color = "#b82d2d"
+       button_color = colors.get("dlt_button_color")
+       hovered_button_color = colors.get("hovered_dlt_button_color")
        
        row = Frame(frame, bg=default_color, highlightbackground=hovered_color, highlightthickness=0.5)
        row.pack(fill="x", ipadx=10)
@@ -81,7 +93,8 @@ def delete_song(row, music, music_list):
     
 
 
-def add_music(btn, music_list, frame, color="#4CAF50"):
+def add_music(btn, music_list, frame):
+        color = load_theme().get("music_btn_color")
         files  = filedialog.askopenfilenames(filetypes=[("OGG files", "*.ogg")])
         btn.configure(bg=color)
         added_music = add_music_to_list(files)

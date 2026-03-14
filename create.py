@@ -10,6 +10,7 @@ def create(root, music_list, original_radio_station_name, output_directory, thum
     
     if original_radio_station_name.strip() == "":
         messagebox.showerror("Warning", "Radio station name cannot be empty.")
+        root.config(cursor = "")
         return
     
     radio_station_name = original_radio_station_name.strip().replace(" ", "_").lower()

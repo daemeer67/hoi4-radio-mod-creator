@@ -1,0 +1,11 @@
+{
+    "primary_color": "#F7F7F7",
+    "secondary_color": "#d6d6d6",
+    "music_btn_color": "#4CAF50",
+    "hovered_music_btn_color": "#45a049",
+    "default_music_color": "#f0f0f0",
+    "hovered_music_color": "#cacaca",
+    "dlt_button_color": "#cf4646",
+    "hovered_dlt_button_color": "#b82d2d",
+    "selected_tab": "#8F8F8F"
+}
