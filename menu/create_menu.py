@@ -10,14 +10,17 @@ def create_label(parent, t, r):
 def grid_entry(entry, row, column=1, **kwargs):
     entry.grid(row=row, column=column, sticky="we", ipady=3, ipadx=3, **kwargs)
 
-def create_menu(root, music_list):
+
+
+def create_menu(main_frame, music_list):
+    delete_children(main_frame)
     
     colors = load_theme()
+    root = main_frame.master
     
-    main_frame = ttk.Frame(root)
     main_frame.grid(row=1, column=0, sticky="nsew")
     
-    root.columnconfigure(0, weight=1)
+    
     
     main_frame.columnconfigure(1, weight=1)  
     
@@ -95,5 +98,3 @@ def create_menu(root, music_list):
                                                                  radio_station_cover_path=radio_station_cover_entry.get()
                                                                  )).grid(row=7, column=1, pady=15)
     
-    
-    root.mainloop()

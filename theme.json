@@ -7,5 +7,6 @@
     "hovered_music_color": "#cacaca",
     "dlt_button_color": "#cf4646",
     "hovered_dlt_button_color": "#b82d2d",
-    "selected_tab": "#8F8F8F"
+    "selected_tab": "#E8E8E8",
+    "unselected_tab": "#BDBDBD"
 }

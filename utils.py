@@ -5,6 +5,11 @@ import json
 
 file_path = "save.txt"
 
+
+def delete_children(widget):
+    for child in widget.winfo_children():
+        child.destroy()
+
 def btn_cursor(widget):
     widget.bind("<Enter>", lambda e: widget.config(cursor="hand2"))
     widget.bind("<Leave>", lambda e: widget.config(cursor=""))
@@ -51,13 +56,8 @@ def add_music_to_list(music_tuple):
         
     return result
 
-
-def clear_music_interface(frame):
-    for widget in frame.winfo_children():
-        widget.destroy()
-
 def show_music(frame, music_list):
-    clear_music_interface(frame)
+    delete_children(frame)
     
     for music in music_list:
        colors = load_theme()
