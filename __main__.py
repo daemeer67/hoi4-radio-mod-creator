@@ -2,16 +2,11 @@ from tkinter import *
 from utils import *
 from menu.create_menu import *
 from menu.edit_menu import *
+from modules import *
 
 colors = load_theme()
 
 active_tab = "create"
-
-def make_a_tab(parent, text):
-    btn = Button(parent, text=text, bg=colors.get("unselected_tab"), bd=0, padx=20, pady=2, activebackground=colors.get("selected_tab"), activeforeground="black")
-    btn.pack(side="left", padx=1)
-    btn_cursor(btn)
-    return btn
 
 
 def interface_controller(switching_to, func):
@@ -45,7 +40,7 @@ def main():
     
     
     
-    main_frame = ttk.Frame(root)
+    main_frame = Frame(root)
     root.columnconfigure(0, weight=1)
     
     

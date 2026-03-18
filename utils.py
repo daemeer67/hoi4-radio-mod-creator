@@ -2,6 +2,8 @@ import os
 from tkinter import *
 from tkinter import filedialog
 import json
+import shutil
+
 
 file_path = "save.txt"
 
@@ -56,7 +58,7 @@ def add_music_to_list(music_tuple):
         
     return result
 
-def show_music(frame, music_list):
+def show_music(frame, music_list, func, **kwargs):
     delete_children(frame)
     
     for music in music_list:
@@ -69,10 +71,10 @@ def show_music(frame, music_list):
        
        row = Frame(frame, bg=default_color, highlightbackground=hovered_color, highlightthickness=0.5)
        row.pack(fill="x", ipadx=10)
-       label = Label(row, text=f"{music["name"]}", anchor="w", bg=default_color)
+       label = Label(row, text=f"{music['name']}", anchor="w", bg=default_color)
        label.pack(side="left", fill="x", expand=True)
        button = Button(row, text="x", 
-                       command=lambda m=music, r=row, ml=music_list: delete_song(r, m, music_list), 
+                       command=lambda m=music, r=row, ml=music_list: func(r, m, music_list, **kwargs), 
                        bg=button_color, fg="white", font=("Arial", 10, "bold"), bd=0)
        button.pack(side="right", ipadx=5)
        label.bind("<Enter>", lambda e, r=row, l=label, b=button: (r.configure(bg=hovered_color), l.configure(bg=hovered_color), b.configure(bg=hovered_button_color)))
@@ -83,22 +85,32 @@ def show_music(frame, music_list):
     
     
 
-def delete_song(row, music, music_list):
+def delete_song(row, music, music_list, delete_file=False):
     for i in range(len(music_list)):
-        if music_list[i]["file"] == music["file"]:
+        file = music_list[i]["file"]
+        norm_file = os.path.normpath(file)
+        if norm_file == music["file"]:
+            if delete_file:
+                if os.path.exists(norm_file):
+                    print("song removed succesfully")
+                    os.remove(norm_file)
+                else:
+                    print("song not found")
             music_list.remove(music_list[i])
             break
     row.destroy()
-    show_music(row.master, music_list)
-    
-
+    show_music(row.master, music_list, delete_song, delete_file=True)
+        
 
 def add_music(btn, music_list, frame):
-        color = load_theme().get("music_btn_color")
-        files  = filedialog.askopenfilenames(filetypes=[("OGG files", "*.ogg")])
-        btn.configure(bg=color)
-        added_music = add_music_to_list(files)
-        for music in added_music:
-            music_list.append(music)
-        show_music(frame, music_list)
+    color = load_theme().get("music_btn_color")
+    files  = filedialog.askopenfilenames(filetypes=[("OGG files", "*.ogg")])
+    btn.configure(bg=color)
+    added_music = add_music_to_list(files)
+    for music in added_music:
+        music_list.append(music)
+    show_music(frame, music_list, delete_song)
         
+        
+
+    
