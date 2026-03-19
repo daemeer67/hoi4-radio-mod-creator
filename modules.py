@@ -16,9 +16,9 @@ def make_a_tab(parent, text):
     btn_cursor(btn)
     return btn  
 
-def create_add_music_btn(parent, music_list, scrollable_frame, r=0, c=0):
+def create_add_music_btn(parent, music_list, scrollable_frame, r=0, c=0, is_editing=False, directory=""):
     insert_music_btn = Button(parent, 
-            command=lambda: add_music(insert_music_btn,  music_list, scrollable_frame), 
+            command=lambda: add_music(insert_music_btn,  music_list, scrollable_frame, is_editing=is_editing, directory=directory), 
             text="Add music (.ogg)", 
             font=("Arial", 12, "bold"),
             bg=colors.get("music_btn_color"), fg="white", bd=0, padx=5, pady=5, 
@@ -29,7 +29,7 @@ def create_add_music_btn(parent, music_list, scrollable_frame, r=0, c=0):
     
     return insert_music_btn
 
-def create_music_interface(main_frame, music_list, can_edit=True):
+def create_music_interface(main_frame, music_list, can_add=True, is_editing=False, directory=""):
     music_frame = Frame(main_frame)
     music_frame.grid(row=6, column=1, columnspan=2, sticky="nsew", pady=10)
     music_frame.columnconfigure(0, weight=1)
@@ -46,8 +46,8 @@ def create_music_interface(main_frame, music_list, can_edit=True):
         
     scrollable_frame = Frame(canvas, bg="gray")
     
-    if can_edit:
-        create_add_music_btn(music_frame, music_list, scrollable_frame)
+    if can_add:
+        create_add_music_btn(music_frame, music_list, scrollable_frame, is_editing=is_editing, directory=directory)
     
     canvas_window = canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
     
@@ -70,9 +70,8 @@ def load_mod(main_frame, directory):
     for file in music_files:
         if file[-4:] == ".ogg":
             music_list.append({
-                "file": os.path.normpath(os.path.join(directory, "music", file)),
+                "file": os.path.normpath(os.path.join(music_path, file)),
                 "name": file
             })
-    music_frame = create_music_interface(main_frame, music_list, can_edit=True)
-    delete_file = True
+    music_frame = create_music_interface(main_frame, music_list, is_editing=True, directory=music_path)
     show_music(music_frame, music_list, delete_song, delete_file=True)

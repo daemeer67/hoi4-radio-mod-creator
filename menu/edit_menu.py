@@ -5,7 +5,7 @@ from modules import *
 def edit_menu(main_frame):
     delete_children(main_frame)
     
-    selected_directory = False
+    is_directory_selected = False
     
     create_label(main_frame, "Mod directory:", 0)
     mod_directory_entry = Entry(main_frame)
@@ -15,6 +15,6 @@ def edit_menu(main_frame):
         default_directory=os.path.expanduser("~\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod"))).grid(row=0, column=2, padx=5)
     Button(main_frame, text="Load Mod", command=lambda: load_mod(main_frame, mod_directory_entry.get())).grid(row=0, column=3, pady=5)
     
-    music_interface = create_music_interface(main_frame, [], can_edit=selected_directory)
+    music_interface = create_music_interface(main_frame, [], can_add=is_directory_selected, is_editing=True)
     
-    selected_directory = True
+    is_directory_selected = True

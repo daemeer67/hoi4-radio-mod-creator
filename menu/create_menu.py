@@ -55,10 +55,10 @@ def create_menu(main_frame, music_list):
     create_music_interface(main_frame, music_list)
 
     Button(main_frame, text="Create Mod", command=lambda: create(root,
-                                                                 music_list, 
-                                                                 radio_station_name_entry.get(), 
-                                                                 hoi4_mod_directory.get(),
-                                                                 thumbnail_path=mod_thumbnail_entry.get(),
-                                                                 radio_station_cover_path=radio_station_cover_entry.get()
-                                                                 )).grid(row=7, column=1, pady=15)
+                                        music_list, 
+                                        radio_station_name_entry.get(), 
+                                        hoi4_mod_directory.get(),
+                                        thumbnail_path=mod_thumbnail_entry.get(),
+                                        radio_station_cover_path=radio_station_cover_entry.get()
+                                        )).grid(row=7, column=1, pady=15)
     

@@ -86,31 +86,40 @@ def show_music(frame, music_list, func, **kwargs):
     
 
 def delete_song(row, music, music_list, delete_file=False):
-    for i in range(len(music_list)):
-        file = music_list[i]["file"]
-        norm_file = os.path.normpath(file)
-        if norm_file == music["file"]:
+    for i, item in enumerate(music_list):
+        file = os.path.normpath(item["file"])
+        target = os.path.normpath(music["file"])
+
+        if file == target:
             if delete_file:
-                if os.path.exists(norm_file):
-                    print("song removed succesfully")
-                    os.remove(norm_file)
+                if os.path.exists(file):
+                    try:
+                        os.remove(file)
+                        print("song removed successfully")
+                    except Exception as e:
+                        print("Error deleting:", e)
                 else:
                     print("song not found")
-            music_list.remove(music_list[i])
+
+            del music_list[i]
             break
+
     row.destroy()
-    show_music(row.master, music_list, delete_song, delete_file=True)
+    show_music(row.master, music_list, delete_song, delete_file=delete_file)
         
 
-def add_music(btn, music_list, frame):
+
+
+def add_music(btn, music_list, frame, is_editing=False, directory=""):
     color = load_theme().get("music_btn_color")
     files  = filedialog.askopenfilenames(filetypes=[("OGG files", "*.ogg")])
     btn.configure(bg=color)
     added_music = add_music_to_list(files)
     for music in added_music:
+        if is_editing:
+            shutil.copy2(music["file"], directory)
+            new_path = os.path.join(directory, music["name"])
+            print(new_path)
+            music["file"] = new_path
         music_list.append(music)
-    show_music(frame, music_list, delete_song)
-        
-        
-
-    
+    show_music(frame, music_list, delete_song, delete_file=is_editing)
