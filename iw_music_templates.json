@@ -1,0 +1,4 @@
+{
+    "asset": "music = {\n\tname = \"test_song\"\n\tfile = \"test_song.ogg\"\n}\n",
+    "txt": "music = {\n\tsong = \"test_song\"\n\tchance = {\n\t\tfactor = 0\n\t\tmodifier = {\n\t\t\tfactor = 100\n\t\t}\n\t}\n}\n"
+}

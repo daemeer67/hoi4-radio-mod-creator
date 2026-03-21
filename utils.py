@@ -3,6 +3,7 @@ from tkinter import *
 from tkinter import filedialog
 import json
 import shutil
+from pathlib import Path
 
 
 file_path = "save.txt"
@@ -61,8 +62,8 @@ def add_music_to_list(music_tuple):
 def show_music(frame, music_list, func, **kwargs):
     delete_children(frame)
     
+    colors = load_theme()
     for music in music_list:
-       colors = load_theme()
        default_color = colors.get("default_music_color")
        hovered_color = colors.get("hovered_music_color")
        
@@ -74,7 +75,7 @@ def show_music(frame, music_list, func, **kwargs):
        label = Label(row, text=f"{music['name']}", anchor="w", bg=default_color)
        label.pack(side="left", fill="x", expand=True)
        button = Button(row, text="x", 
-                       command=lambda m=music, r=row, ml=music_list: func(r, m, music_list, **kwargs), 
+                       command=lambda m=music, r=row, ml=music_list: func(r, m, ml, **kwargs), 
                        bg=button_color, fg="white", font=("Arial", 10, "bold"), bd=0)
        button.pack(side="right", ipadx=5)
        label.bind("<Enter>", lambda e, r=row, l=label, b=button: (r.configure(bg=hovered_color), l.configure(bg=hovered_color), b.configure(bg=hovered_button_color)))
@@ -102,6 +103,7 @@ def delete_song(row, music, music_list, delete_file=False):
                     print("song not found")
 
             del music_list[i]
+            update_iw_music_files(Path(target).parent, music_list)
             break
 
     row.destroy()
@@ -115,7 +117,11 @@ def add_music(btn, music_list, frame, is_editing=False, directory=""):
     files  = filedialog.askopenfilenames(filetypes=[("OGG files", "*.ogg")])
     btn.configure(bg=color)
     added_music = add_music_to_list(files)
+    existing_files = {m["name"] for m in music_list}
     for music in added_music:
+        if music["name"] in existing_files:
+            continue
+        
         if is_editing:
             shutil.copy2(music["file"], directory)
             new_path = os.path.join(directory, music["name"])
@@ -123,3 +129,28 @@ def add_music(btn, music_list, frame, is_editing=False, directory=""):
             music["file"] = new_path
         music_list.append(music)
     show_music(frame, music_list, delete_song, delete_file=is_editing)
+    
+    if is_editing: update_iw_music_files(directory, music_list)
+    
+# this function is intended to be used when there are changes in the music list when the user is in the editing tab
+def update_iw_music_files(directory, music_list):
+    station_name = os.path.basename(directory)
+    templates = ""
+    with open("iw_music_templates.json", "r") as file:
+        templates = json.load(file)
+        
+    txt_path = os.path.normpath(os.path.join(directory, "iw_music.txt"))
+    asset_path = os.path.normpath(os.path.join(directory, "iw_music.asset"))
+        
+    with open(txt_path, "w") as file:
+        text = "music_station = \"iw_test_station\"\n"
+        text.replace("test_station", station_name)
+        for music in music_list:
+            text += templates["txt"].replace("test_song", music["name"])
+        file.write(text)
+    
+    with open(asset_path, "w") as file:
+        text = ""
+        for music in music_list:
+            text += templates["asset"].replace("test_song", music["name"].replace(".ogg", ""))
+        file.write(text)
