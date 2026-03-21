@@ -1,6 +1,5 @@
 # HOI4 Radio Tool
 
-## Headers
 This is a tool intended for the creation and very basic management of HOI4 radio mods that contain only one station (for the moment, maybe I might add for more stations later). This tool is in early development, there may be some bugs.
 
 ## Features
@@ -12,4 +11,4 @@ This is a tool intended for the creation and very basic management of HOI4 radio
 - Add tags to music so they can be only be player for specific countries or ideologies.
 
 
-![This is an alt text.](/screenshot-1.jpg")
+(/screenshot-1.jpg)
