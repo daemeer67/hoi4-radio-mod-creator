@@ -11,4 +11,4 @@ This is a tool intended for the creation and very basic management of HOI4 radio
 - Add tags to music so they can be only be player for specific countries or ideologies.
 
 
-(/screenshot-1.jpg)
+![Alt text](screenshot-1.jpg)
